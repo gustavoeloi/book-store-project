@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
 import ButtonReturn from "../components/ButtonReturn";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const BookEdit = () => {
-  const { id } = useParams();
-  const [book, setBook] = useState({});
+const BookAdd = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [publishYear, setPublishYear] = useState("");
@@ -13,20 +11,7 @@ const BookEdit = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5555/api/books/${id}`)
-      .then(({ data }) => {
-        setBook(data);
-        setTitle(data.title);
-        setAuthor(data.author);
-        setPublishYear(data.publishYear);
-        setPages(data.pages);
-      })
-      .catch((err) => console.log(err));
-  }, [id]);
-
-  const handleSubmit = (e) => {
+  const handleAddNewBook = (e) => {
     e.preventDefault();
     const newBook = {
       title,
@@ -34,9 +19,16 @@ const BookEdit = () => {
       publishYear,
       pages,
     };
+
     axios
-      .put(`http://localhost:5555/api/books/${id}`, newBook)
+      .post("http://localhost:5555/api/books", newBook)
       .then(() => {
+        setTitle("");
+        setAuthor("");
+        setPublishYear("");
+        setPages("");
+
+        alert("New book added successfully");
         navigate("/");
       })
       .catch((err) => console.log(err));
@@ -45,8 +37,8 @@ const BookEdit = () => {
   return (
     <div className="h-screen mx-auto container flex flex-col items-center justify-center">
       <ButtonReturn />
-      <h1 className="font-medium text-2xl mb-4">Edit Book - ({book.title})</h1>
-      <form className="w-full max-w-md" onSubmit={handleSubmit}>
+      <h1 className="font-medium text-2xl mb-4">Add a new book</h1>
+      <form className="w-full max-w-md" onSubmit={handleAddNewBook}>
         <div className="mb-4">
           <label htmlFor="title" className="block text-xl text-slate-800">
             Title
@@ -55,8 +47,8 @@ const BookEdit = () => {
             type="text"
             id="title"
             value={title}
-            className="w-full border p-2 rounded-sm"
             onChange={(e) => setTitle(e.target.value)}
+            className="w-full border p-2 rounded-sm"
           />
         </div>
         <div className="mb-4">
@@ -106,4 +98,4 @@ const BookEdit = () => {
   );
 };
 
-export default BookEdit;
+export default BookAdd;
