@@ -10,7 +10,14 @@ import booksRoute from "./routes/booksRoute.js";
 
 const app = express();
 app.use(express.json());
-app.use("/api", booksRoute);
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+
+  next();
+});
 
 app.use(cors());
 
@@ -21,6 +28,8 @@ app.use(cors());
 //     allowedHeaders: ["Content-Type", "Authorization"], // Cabeçalhos permitidos
 //   })
 // );
+
+app.use("/api", booksRoute);
 
 mongoose
   .connect(mongoDBURL)
