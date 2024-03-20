@@ -14,7 +14,7 @@ const Card = ({ book, handleDelete }) => {
           <BookIcon />
           {book.title}
         </h2>
-        <p className="bg-rose-900 text-white p-1 rounded-xl">
+        <p className="bg-sky-300 text-white px-2 py-1 rounded-xl ">
           {book.publishYear}
         </p>
       </div>

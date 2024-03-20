@@ -9,11 +9,14 @@ import Spinner from "../components/Spinner";
 import BooksTables from "../components/BooksTable";
 import BookCard from "../components/BookCard";
 
+import { useSnackbar } from "notistack";
+
 const Home = () => {
   const [loading, setLoading] = useState(false);
   const [books, setBooks] = useState([]);
   const navigate = useNavigate();
   const [showType, setShowType] = useState("table");
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     setLoading(true);
@@ -30,6 +33,8 @@ const Home = () => {
     const confirm = window.confirm("Are you sure to delete this book?");
     if (confirm) {
       axios.delete(`http://localhost:5555/api/books/${id}`).then(() => {
+        enqueueSnackbar("Book deleted successfully", { variant: "info" });
+
         setBooks(books.filter((book) => book._id !== id));
       });
     } else {

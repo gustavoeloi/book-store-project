@@ -2,12 +2,14 @@ import { useState } from "react";
 import ButtonReturn from "../components/ButtonReturn";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 const BookAdd = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [publishYear, setPublishYear] = useState("");
   const [pages, setPages] = useState("");
+  const { enqueueSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
 
@@ -28,10 +30,15 @@ const BookAdd = () => {
         setPublishYear("");
         setPages("");
 
-        alert("New book added successfully");
+        enqueueSnackbar("Created Book success", { variant: "success" });
         navigate("/");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        enqueueSnackbar("Error creating book, try again later", {
+          variant: "error",
+        });
+        console.log(err);
+      });
   };
 
   return (

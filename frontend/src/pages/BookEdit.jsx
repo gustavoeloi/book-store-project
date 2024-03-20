@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import ButtonReturn from "../components/ButtonReturn";
+import { useSnackbar } from "notistack";
 
 const BookEdit = () => {
   const { id } = useParams();
@@ -10,6 +11,7 @@ const BookEdit = () => {
   const [author, setAuthor] = useState("");
   const [publishYear, setPublishYear] = useState("");
   const [pages, setPages] = useState("");
+  const { enqueueSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
 
@@ -37,6 +39,7 @@ const BookEdit = () => {
     axios
       .put(`http://localhost:5555/api/books/${id}`, newBook)
       .then(() => {
+        enqueueSnackbar("Book successfully edited", { variant: "info" });
         navigate("/");
       })
       .catch((err) => console.log(err));
