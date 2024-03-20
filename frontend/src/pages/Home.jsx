@@ -68,7 +68,7 @@ const Home = () => {
         ) : showType === "table" ? (
           <BooksTables books={books} handleDelete={handleDelete} />
         ) : (
-          <BookCard books={books} />
+          <BookCard books={books} handleDelete={handleDelete} />
         )}
       </div>
     </div>
